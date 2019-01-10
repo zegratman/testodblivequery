@@ -25,10 +25,12 @@ public class Root implements OdbStorable {
         odbId = vertex.getId();
 
         // Add branches
-        branches.parallelStream().forEach(branch -> {
+        branches.forEach(branch -> {
             branch.toGraph(graph);
             graph.addEdge(null, vertex, graph.getVertex(branch.getOdbId()), "refers");
         });
+
+        graph.commit();
 
     }
 

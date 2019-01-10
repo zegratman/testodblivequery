@@ -27,13 +27,13 @@ public class Branch implements OdbStorable {
         odbId = vertex.getId();
 
         // Add branches
-        branches.parallelStream().forEach(branch -> {
+        branches.forEach(branch -> {
             branch.toGraph(graph);
             graph.addEdge(null, vertex, graph.getVertex(branch.getOdbId()), "refers");
         });
 
         // Add leaves
-        leaves.parallelStream().forEach(leaf -> {
+        leaves.forEach(leaf -> {
             leaf.toGraph(graph);
             graph.addEdge(null, vertex, graph.getVertex(leaf.getOdbId()), "owns");
         });

@@ -4,7 +4,6 @@ import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import fr.cnes.fds.odb.model.Branch;
 import fr.cnes.fds.odb.model.Leaf;
 import fr.cnes.fds.odb.model.Root;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
