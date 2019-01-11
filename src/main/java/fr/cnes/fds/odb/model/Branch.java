@@ -2,6 +2,7 @@ package fr.cnes.fds.odb.model;
 
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import com.tinkerpop.blueprints.impls.orient.OrientGraphNoTx;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Branch implements OdbStorable {
     }
 
     @Override
-    public void toGraph(OrientGraph graph) {
+    public void toGraph(OrientGraphNoTx graph) {
 
         // Add main vertex
         Vertex vertex = graph.addVertex(getOdbClass(), "name", name);
@@ -37,6 +38,9 @@ public class Branch implements OdbStorable {
             leaf.toGraph(graph);
             graph.addEdge(null, vertex, graph.getVertex(leaf.getOdbId()), "owns");
         });
+
+        /// VERY IMPORTANT : allows big computation.
+        graph.commit();
 
     }
 

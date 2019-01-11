@@ -1,7 +1,7 @@
 package fr.cnes.fds.odb.model;
 
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import com.tinkerpop.blueprints.impls.orient.OrientGraphNoTx;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class Root implements OdbStorable {
     }
 
     @Override
-    public void toGraph(OrientGraph graph) {
+    public void toGraph(OrientGraphNoTx graph) {
 
         // Add main vertex
         Vertex vertex = graph.addVertex(getOdbClass(), "name", name);

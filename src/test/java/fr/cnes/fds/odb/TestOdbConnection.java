@@ -1,7 +1,7 @@
 package fr.cnes.fds.odb;
 
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import com.tinkerpop.blueprints.impls.orient.OrientGraphNoTx;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class TestOdbConnection {
         try {
             OdbConnection odbConnection = OdbConnection.getInstance();
             assertNotNull(odbConnection);
-            OrientGraph orientGraph = odbConnection.getOrientGraph();
+            OrientGraphNoTx orientGraph = odbConnection.getOrientGraphNoTx();
             assertNotNull(orientGraph);
             orientGraph.shutdown();
             odbConnection.closeConnection();
@@ -31,7 +31,7 @@ public class TestOdbConnection {
         try {
 
             // Get connection and graph
-            OrientGraph orientGraph = OdbConnection.getInstance().getOrientGraph();
+            OrientGraphNoTx orientGraph = OdbConnection.getInstance().getOrientGraphNoTx();
             assertNotNull(orientGraph);
 
             // Adding vertex

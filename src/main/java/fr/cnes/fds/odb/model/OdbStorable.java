@@ -1,6 +1,6 @@
 package fr.cnes.fds.odb.model;
 
-import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import com.tinkerpop.blueprints.impls.orient.OrientGraphNoTx;
 
 public interface OdbStorable {
 
@@ -8,7 +8,7 @@ public interface OdbStorable {
       return "class:" + this.getClass().getSimpleName();
     }
 
-    void toGraph(OrientGraph graph);
+    void toGraph(OrientGraphNoTx graph);
 
     Object getOdbId();
 

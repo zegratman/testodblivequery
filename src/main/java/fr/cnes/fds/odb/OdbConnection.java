@@ -1,7 +1,9 @@
 package fr.cnes.fds.odb;
 
-import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import com.orientechnologies.orient.client.remote.OServerAdmin;
+import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory;
+import com.tinkerpop.blueprints.impls.orient.OrientGraphNoTx;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -13,6 +15,7 @@ public class OdbConnection {
 
     private static OdbConnection odbConnection;
     private static OrientGraphFactory ORIENT_GRAPH_FACTORY;
+    private static ODatabaseDocumentTx ORIENT_DB_DOC;
 
     private OdbConnection() {
 
@@ -22,6 +25,8 @@ public class OdbConnection {
         Properties properties = new Properties();
         properties.load(OdbConnection.class.getClassLoader().getResourceAsStream(ODB_PROPS));
         StringBuilder odbUrlBuilder = new StringBuilder();
+        String login = properties.getProperty("odb.login");
+        String passwd = properties.getProperty("odb.passwd");
         String odbUrl = odbUrlBuilder
                 .append(ODB_MODE)
                 .append(":")
@@ -31,7 +36,8 @@ public class OdbConnection {
                 .append("/")
                 .append(properties.getProperty("odb.dbname"))
                 .toString();
-        ORIENT_GRAPH_FACTORY = new OrientGraphFactory(odbUrl, properties.getProperty("odb.login"), properties.getProperty("odb.passwd"));
+        ORIENT_GRAPH_FACTORY = new OrientGraphFactory(odbUrl, login, passwd);
+        ORIENT_DB_DOC = new ODatabaseDocumentTx(odbUrl).open(login, passwd);
     }
 
     public static final OdbConnection getInstance() throws IOException {
@@ -42,12 +48,17 @@ public class OdbConnection {
         return odbConnection;
     }
 
-    public OrientGraph getOrientGraph() {
-        return ORIENT_GRAPH_FACTORY.getTx();
+    public OrientGraphNoTx getOrientGraphNoTx() {
+        return ORIENT_GRAPH_FACTORY.getNoTx();
+    }
+
+    public ODatabaseDocumentTx getOrientDbDoc() {
+        return ORIENT_DB_DOC;
     }
 
     public void closeConnection() {
         ORIENT_GRAPH_FACTORY.close();
+        ORIENT_DB_DOC.close();
     }
 
 }

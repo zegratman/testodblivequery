@@ -1,6 +1,6 @@
 package fr.cnes.fds.odb;
 
-import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import com.tinkerpop.blueprints.impls.orient.OrientGraphNoTx;
 import fr.cnes.fds.odb.model.Branch;
 import fr.cnes.fds.odb.model.Leaf;
 import fr.cnes.fds.odb.model.Root;
@@ -18,7 +18,7 @@ public class TestModelStorage {
         try {
 
             // Get graph
-            OrientGraph graph = OdbConnection.getInstance().getOrientGraph();
+            OrientGraphNoTx graph = OdbConnection.getInstance().getOrientGraphNoTx();
 
             // Create Root
             Root root = new Root("test_root");
@@ -52,11 +52,13 @@ public class TestModelStorage {
         try {
 
             // Get graph
-            OrientGraph graph = OdbConnection.getInstance().getOrientGraph();
+            OrientGraphNoTx graph = OdbConnection.getInstance().getOrientGraphNoTx();
+            graph.getVertices().forEach(vertex -> {
+                graph.removeVertex(vertex);
+                graph.commit();
+            });
 
-            graph.getVertices().forEach(vertex -> graph.removeVertex(vertex));
-
-            graph.shutdown();
+            graph.shutdown(false);
 
         } catch (IOException e) {
             e.printStackTrace();
